@@ -51,51 +51,35 @@ class PointsController {
 
   async create(request: Request, response: Response) {
     const {
+      place_id,
       name,
-      email,
-      whatsapp,
+      description,
       latitude,
       longitude,
       city,
       uf,
-      items,
     } = request.body;
 
-    console.log(request.body);
-
-    const trx = await knex.transaction();
-
     const point = {
-      image: request.file.filename,
+      place_id,
       name,
-      email,
-      whatsapp,
+      description,
       latitude,
       longitude,
       city,
       uf,
     };
 
-    const insertedIds = await trx("points").insert(point);
+    const places = await knex('places').select('id');
 
-    const point_id = insertedIds[0];
+    if (place_id > places.length) {
+      return response.json({error: 'Tipo de local não cadastrado'});
+    }
 
-    const pointItems = items
-      .split(",")
-      .map((item: string) => Number(item.trim()))
-      .map((item_id: number) => {
-        return {
-          item_id,
-          point_id,
-        };
-      });
-
-    await trx("point_items").insert(pointItems);
-
-    await trx.commit();
+    const insertedIds = await knex("points").insert(point);
 
     return response.json({
-      id: point_id,
+      id: insertedIds[0],
       ...point,
     });
   }
