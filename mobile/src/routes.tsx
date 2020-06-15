@@ -7,6 +7,9 @@ const AppStack = createStackNavigator();
 import Home from "./pages/Home";
 import Points from "./pages/Points";
 import Detail from "./pages/Detail";
+import Search from "./pages/Search";
+import Payment from "./pages/Payment";
+import SetTravelHourAndDate from "./pages/SetTravelHourAndDate";
 
 const Routes = () => {
   return (
@@ -19,8 +22,9 @@ const Routes = () => {
           },
         }}
       >
-        <AppStack.Screen name="Home" component={Home} />
         <AppStack.Screen name="Points" component={Points} />
+        <AppStack.Screen name="Payment" component={Payment} />
+        <AppStack.Screen name="Home" component={Home} />
         <AppStack.Screen name="Detail" component={Detail} />
       </AppStack.Navigator>
     </NavigationContainer>
